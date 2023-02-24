@@ -226,7 +226,25 @@ filters = {
   }
 }
 
+# OR
+
+filters = {
+  'schedules[0]opened': {
+    eq: true
+  }
+}
+
+# OR
+
+filters = {
+  'schedules.[0].opened': {
+    eq: true
+  }
+}
+
 collection = Recollect::Array.filter(data, filters)
+
+# [{ schedules: [{ opened: true, all_day: true }, { opened: false, all_day: true }] }]
 ```
 
 **Combine conditions**
@@ -339,6 +357,13 @@ result = Recollect::Hashie.get(user, 'numbers')
 
 result = Recollect::Hashie.get(user, 'numbers.0')
 -> 1
+
+result = Recollect::Hashie.get(user, 'numbers[0]')
+-> 1
+
+result = Recollect::Hashie.get(user, 'numbers[0][1]')
+
+result = Recollect::Hashie.get(user, 'numbers.[0].[1]')
 ```
 
 ### Recollect::Array.pluck(array, path)

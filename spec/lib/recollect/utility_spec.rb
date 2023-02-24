@@ -69,6 +69,7 @@ RSpec.describe Recollect::Utility::TryFetchOrBlank do
       it { expect(described_class[hash, 'd.0.e[2].e3']).to eq(3) }
       it { expect(described_class[hash, 'd[0]e.2.e3']).to eq(3) }
       it { expect(described_class[hash, 'd.[0].e[1]e2']).to eq(2) }
+      it { expect(described_class[hash, 'd[0]e[1]e2']).to eq(2) }
     end
   end
 end
