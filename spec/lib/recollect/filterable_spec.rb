@@ -71,6 +71,43 @@ RSpec.describe Recollect::Filterable do
     end
 
     context 'when value is Hash contains predicates' do
+      context 'and hash value is Callable' do
+        it 'returns only filters items' do
+          filters = {
+            active: {
+              eq: -> { true }
+            }
+          }
+
+          collection = Recollect::Filterable.call(data, filters)
+
+          expect(collection.result.size).to eq(2)
+        end
+
+        it 'returns only filters items' do
+          filters = {
+            active: { eq: ActiveTruthy },
+            numbers: { in: NumbersAvailable }
+          }
+
+          collection = Recollect::Filterable.call(data, filters)
+
+          expect(collection.result.size).to eq(1)
+        end
+
+        it 'returns only filters items' do
+          filters = {
+            active: {
+              eq: ActiveFalsey
+            }
+          }
+
+          collection = Recollect::Filterable.call(data, filters)
+
+          expect(collection.result.size).to eq(1)
+        end
+      end
+
       it 'returns only filters items' do
         filters = { active: { eq: true } }
 

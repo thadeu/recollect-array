@@ -33,7 +33,12 @@ module Recollect
             klass = Predicate.call(predicate)
 
             @result.filter! do |item|
-              klass.check!(item, key, item_value)
+              case item_value
+              when Proc, Module
+                klass.check!(item, key, item_value.call)
+              else
+                klass.check!(item, key, item_value)
+              end
             end
           end
         else

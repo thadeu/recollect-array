@@ -247,6 +247,49 @@ collection = Recollect::Array.filter(data, filters)
 # [{ schedules: [{ opened: true, all_day: true }, { opened: false, all_day: true }] }]
 ```
 
+Amazing, you can pass a Callable value as value, like this.
+
+```ruby
+filters = {
+  'schedules.[0].opened': {
+    eq: -> { true }
+  }
+}
+
+# OR a Module
+
+module ActiveTruthy
+  def self.call = true
+end
+
+module NumbersAvailable
+  def self.call = %w[1 2]
+end
+
+filters = {
+  'schedules.[0].opened': {
+    eq: ActiveTruthy
+  },
+  numbers: {
+    in: NumbersAvailable
+  }
+}
+
+# OR a Class
+
+class ActiveFalsey
+  def self.call = false
+end
+
+filters = {
+  'schedules.[0].opened': {
+    eq: ActiveFalsey
+  }
+}
+
+collection = Recollect::Array.filter(data, filters)
+```
+
 **Combine conditions**
 
 Yes, you can combine one or multiple predicates to filter you array.
