@@ -11,8 +11,6 @@
   <a href="https://github.com/thadeu/nano-collection-filter/actions/workflows/ci.yml">
     <img alt="Build Status" src="https://github.com/thadeu/nano-collection-filter/actions/workflows/ci.yml/badge.svg">
   </a>
-
-  [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 </p>
 
 
