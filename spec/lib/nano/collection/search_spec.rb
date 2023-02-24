@@ -43,6 +43,22 @@ RSpec.describe Nano::Collection::Search do
 
       expect(collection.result.size).to eq(2)
     end
+
+    it 'returns only filters items' do
+      filters = { 'schedule.all_day_eq': true }
+
+      collection = Nano::Collection::Search.apply(data, filters)
+
+      expect(collection.result.size).to eq(1)
+    end
+
+    it 'returns only filters items' do
+      filters = { 'numbers.0_eq': '1' }
+
+      collection = Nano::Collection::Search.apply(data, filters)
+
+      expect(collection.result.size).to eq(1)
+    end
   end
 
   context 'NotEqual' do
