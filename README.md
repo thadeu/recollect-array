@@ -1,6 +1,6 @@
 <p align="center">
-  <h1 align="center">🎨 nano-collection-filter</h1>
-  <p align="center"><i>Simple filter array for Pure Ruby with conditions</i></p>
+  <h1 align="center">㌨ nano-collection-filter</h1>
+  <p align="center"><i>Simple wrapper to filter array using Pure Ruby and conditions</i></p>
 </p>
 
 <p align="center">

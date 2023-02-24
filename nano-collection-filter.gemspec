@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.authors     = ['Thadeu Esteves Jr']
   s.email       = ['tadeuu@gmail.com']
   s.homepage    = 'https://github.com/thadeu/nano-collection-filter'
-  s.summary     = '%q{Simple filter array for Pure Ruby with conditions}'
+  s.summary     = '%q{Simple wrapper to filter array using Pure Ruby and conditions}'
   s.description = '%q{Filter in Array collection using predicates like Ransack gem.}'
   s.license = 'MIT'
 
