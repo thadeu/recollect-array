@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Nano::Collection::Search do
+RSpec.describe Recollect::Filterable do
   let(:data) do
     [
       {
@@ -39,7 +39,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { active_eq: true }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(2)
     end
@@ -47,7 +47,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { 'schedule.all_day_eq': true }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -55,7 +55,15 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { 'numbers.0_eq': '1' }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
+
+      expect(collection.result.size).to eq(1)
+    end
+
+    it 'returns only filters items' do
+      filters = { 'numbers.0._eq': '3' }
+
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -65,7 +73,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { active_noteq: true }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -75,7 +83,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { name_cont: '#3' }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(1)
       expect(collection.result.first[:name]).to eq('Test #3')
@@ -86,7 +94,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { name_notcont: '#3' }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(2)
       expect(collection.result.first[:name]).to eq('Test #1')
@@ -97,7 +105,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { count_lt: 10 }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -107,7 +115,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { count_lteq: 10 }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(2)
     end
@@ -117,7 +125,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { count_gt: 10 }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -127,7 +135,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { count_gteq: 10 }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(2)
     end
@@ -137,7 +145,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { email_start: 'test1' }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -145,7 +153,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { email_start: 'test2' }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -153,7 +161,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { email_start: 'test3' }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -163,7 +171,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { email_end: 'email1.com' }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -171,7 +179,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { email_end: 'email2.com' }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -179,7 +187,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { email_end: 'email3.com' }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -189,7 +197,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { email_notstart: 'test1' }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(2)
     end
@@ -199,7 +207,7 @@ RSpec.describe Nano::Collection::Search do
     it 'returns only filters items' do
       filters = { email_notend: 'email1.com' }
 
-      collection = Nano::Collection::Search.apply(data, filters)
+      collection = Recollect::Filterable.call(data, filters)
 
       expect(collection.result.size).to eq(2)
     end
@@ -210,7 +218,7 @@ RSpec.describe Nano::Collection::Search do
       it 'returns only filters items' do
         filters = { numbers_in: ['1'] }
 
-        collection = Nano::Collection::Search.apply(data, filters)
+        collection = Recollect::Filterable.call(data, filters)
 
         expect(collection.result.size).to eq(1)
       end
@@ -220,7 +228,7 @@ RSpec.describe Nano::Collection::Search do
       it 'returns only filters items' do
         filters = { numbers_in: '1' }
 
-        collection = Nano::Collection::Search.apply(data, filters)
+        collection = Recollect::Filterable.call(data, filters)
 
         expect(collection.result.size).to eq(1)
       end
@@ -230,7 +238,7 @@ RSpec.describe Nano::Collection::Search do
       it 'returns only filters items' do
         filters = { active_in: [true] }
 
-        collection = Nano::Collection::Search.apply(data, filters)
+        collection = Recollect::Filterable.call(data, filters)
 
         expect(collection.result.size).to eq(2)
       end
@@ -238,7 +246,7 @@ RSpec.describe Nano::Collection::Search do
       it 'returns only filters items' do
         filters = { active_in: [true, false] }
 
-        collection = Nano::Collection::Search.apply(data, filters)
+        collection = Recollect::Filterable.call(data, filters)
 
         expect(collection.result.size).to eq(3)
       end
@@ -250,7 +258,7 @@ RSpec.describe Nano::Collection::Search do
       it 'returns only filters items' do
         filters = { numbers_notin: ['1'] }
 
-        collection = Nano::Collection::Search.apply(data, filters)
+        collection = Recollect::Filterable.call(data, filters)
 
         expect(collection.result.size).to eq(2)
       end
@@ -258,7 +266,7 @@ RSpec.describe Nano::Collection::Search do
       it 'returns only filters items' do
         filters = { numbers_notin: %w[1 3] }
 
-        collection = Nano::Collection::Search.apply(data, filters)
+        collection = Recollect::Filterable.call(data, filters)
 
         expect(collection.result.size).to eq(1)
       end
@@ -268,7 +276,7 @@ RSpec.describe Nano::Collection::Search do
       it 'returns only filters items' do
         filters = { numbers_notin: '1' }
 
-        collection = Nano::Collection::Search.apply(data, filters)
+        collection = Recollect::Filterable.call(data, filters)
 
         expect(collection.result.size).to eq(2)
       end

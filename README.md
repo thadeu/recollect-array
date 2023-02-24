@@ -1,15 +1,15 @@
 <p align="center">
-  <h1 align="center">㌨ nano-collection-filter</h1>
-  <p align="center"><i>Simple wrapper to filter array using Pure Ruby and conditions</i></p>
+  <h1 align="center">🔃 recollect-array-filter</h1>
+  <p align="center"><i>Simple wrapper to filter array using Ruby and simple predicate conditions</i></p>
 </p>
 
 <p align="center">
-  <a href="https://rubygems.org/gems/nano-collection-filter">
-    <img alt="Gem" src="https://img.shields.io/gem/v/nano-collection-filter.svg?style=flat-square">
+  <a href="https://rubygems.org/gems/recollect-array-filter">
+    <img alt="Gem" src="https://img.shields.io/gem/v/recollect-array-filter.svg?style=flat-square">
   </a>
 
-  <a href="https://github.com/thadeu/nano-collection-filter/actions/workflows/ci.yml">
-    <img alt="Build Status" src="https://github.com/thadeu/nano-collection-filter/actions/workflows/ci.yml/badge.svg">
+  <a href="https://github.com/thadeu/recollect-array-filter/actions/workflows/ci.yml">
+    <img alt="Build Status" src="https://github.com/thadeu/recollect-array-filter/actions/workflows/ci.yml/badge.svg">
   </a>
 </p>
 
@@ -22,13 +22,14 @@ Because in sometimes, we need filter array passing conditions. This gem simplify
 
 Version    | Documentation
 ---------- | -------------
-unreleased | https://github.com/thadeu/nano-collection-filter/blob/main/README.md
+unreleased | https://github.com/thadeu/recollect-array-filter/blob/main/README.md
 
 ## Table of Contents <!-- omit in toc -->
   - [Installation](#installation)
-  - [Usage](#usage)
   - [Configuration](#configuration)
   - [Availables Predicates](#availables-predicates)
+  - [Usage](#usage)
+  - [Utilities](#utilities)
 
 ## Compatibility
 
@@ -38,10 +39,16 @@ unreleased | https://github.com/thadeu/nano-collection-filter/blob/main/README.m
 
 ## Installation
 
-Add this line to your application's Gemfile.
+Use bundle
 
 ```ruby
-gem 'nano-collection-filter', '~> 0.0.1'
+bundle add recollect-array-filter
+```
+
+or add this line to your application's Gemfile.
+
+```ruby
+gem 'recollect-array-filter'
 ```
 
 ## Configuration
@@ -71,7 +78,7 @@ Without configuration, because we use only Ruby. ❤️
 ## Usage
 
 <details>
-  <summary>Data</summary>
+  <summary>Think that your data seems like this.</summary>
   
   ```ruby
   data = [
@@ -106,13 +113,14 @@ Without configuration, because we use only Ruby. ❤️
   ```
 </details>
 
+So, you can use many predicate to filter array. For example:
 
 ## Equal
 
 ```ruby
 filters = { active_eq: true }
 
-collection = Nano::Collection::Search.apply(data, filters)
+collection = Recollect::Array.filter(data, filters)
 ```
 
 ## NotEqual
@@ -120,7 +128,7 @@ collection = Nano::Collection::Search.apply(data, filters)
 ```ruby
 filters = { active_noteq: true }
 
-collection = Nano::Collection::Search.apply(data, filters)
+collection = Recollect::Array.filter(data, filters)
 ```
 
 ## Nested Hash Paths
@@ -128,7 +136,7 @@ collection = Nano::Collection::Search.apply(data, filters)
 ```ruby
 filters = { 'schedule.all_day_eq': false }
 
-collection = Nano::Collection::Search.apply(data, filters)
+collection = Recollect::Array.filter(data, filters)
 ```
 
 ## Nested Array Paths
@@ -138,18 +146,21 @@ collection = Nano::Collection::Search.apply(data, filters)
 ```ruby
 filters = { 'numbers.0_eq': '3' }
 
-collection = Nano::Collection::Search.apply(data, filters)
+collection = Recollect::Array.filter(data, filters)
 ```
 
 ```ruby
 filters = { numbers_in: ['1'] }
 
-collection = Nano::Collection::Search.apply(data, filters)
+collection = Recollect::Array.filter(data, filters)
 
 expect(collection.result.size).to eq(1)
 ```
 
 ## Combine conditions
+
+Yes, you can combine one or multiple predicates to filter you array.
+
 
 ```ruby
 filters = {
@@ -159,7 +170,66 @@ filters = {
   'schedule.all_day_eq': false
 }
 
-collection = Nano::Collection::Search.apply(data, filters)
+collection = Recollect::Array.filter(data, filters)
+```
+
+## Utilities
+
+### Recollect::Hash.get(hash, path)
+
+```ruby
+user = {
+  id: 1,
+  name: 'Test #1',
+  email: 'test1@email1.com',
+  schedule: { all_day: true },
+  numbers: %w[1 2],
+  active: true,
+  count: 9
+}
+
+result = Recollect::Hash.get(user, 'id')
+-> 1
+
+result = Recollect::Hash.get(user, 'schedule.all_day')
+-> true
+
+result = Recollect::Hash.get(user, 'numbers')
+-> ['1', '2']
+
+result = Recollect::Hash.get(user, 'numbers.0')
+-> 1
+```
+
+### Recollect::Array.pluck(array, path)
+
+```ruby
+users = [
+  {
+    id: 1,
+    name: 'Test #1',
+    email: 'test1@email1.com',
+    schedule: { all_day: true },
+    numbers: %w[1 2],
+    active: true,
+    count: 9
+  },
+  {
+    id: 2,
+    name: 'Test #1',
+    email: 'test1@email1.com',
+    schedule: { all_day: true },
+    numbers: %w[1 2],
+    active: true,
+    count: 9
+  }
+]
+
+result = Recollect::Array.pluck(users, 'id')
+$ -> [1, 2]
+
+result = Recollect::Array.pluck(users, 'schedule.all_day')
+$ -> [true, true]
 ```
 
 [⬆️ &nbsp;Back to Top](#table-of-contents-)
@@ -172,13 +242,9 @@ To install this gem onto your local machine, run `bundle install`. To release a 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/thadeu/nano-collection-filter. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/thadeu/nano-collection-filter/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/thadeu/recollect-array-filter. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/thadeu/recollect-array-filter/blob/master/CODE_OF_CONDUCT.md).
 
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Contributing
-
-We have a long list of valued contributors. Check them all at: https://github.com/thadeu/nano-collection-filter.

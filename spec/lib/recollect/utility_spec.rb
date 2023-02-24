@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Nano::TryFetchOrBlank do
+RSpec.describe Recollect::Utility::TryFetchOrBlank do
   context 'Hash' do
     it 'check one level' do
       hash = {
@@ -11,13 +11,13 @@ RSpec.describe Nano::TryFetchOrBlank do
         d: ['1']
       }
 
-      expect(Nano::TryFetchOrBlank.call(hash, :a)).to eq(1)
+      expect(described_class.call(hash, :a)).to eq(1)
     end
 
     it 'check two levels' do
       hash = { a: 1, b: { c: 2 }, d: ['1'] }
 
-      expect(Nano::TryFetchOrBlank.call(hash, :b, :c)).to eq(2)
+      expect(described_class.call(hash, :b, :c)).to eq(2)
     end
 
     it 'check two levels' do
@@ -26,20 +26,20 @@ RSpec.describe Nano::TryFetchOrBlank do
         b: {}
       }
 
-      expect(Nano::TryFetchOrBlank.call(hash, :b, :c)).to be_nil
+      expect(described_class.call(hash, :b, :c)).to be_nil
     end
   end
 
   context 'Array' do
     it 'check array levels' do
       hash = { a: 1, b: { c: 2 }, d: ['1'] }
-      expect(Nano::TryFetchOrBlank.call(hash, 'd.0')).to eq('1')
+      expect(described_class.call(hash, 'd.0')).to eq('1')
     end
 
     it 'check array + hash levels' do
       hash = { a: 1, b: { c: 2 }, d: [{ e: 3 }] }
 
-      expect(Nano::TryFetchOrBlank[hash, 'd.0.e']).to eq(3)
+      expect(described_class[hash, 'd.0.e']).to eq(3)
     end
   end
 end

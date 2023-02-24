@@ -2,7 +2,7 @@
 
 require 'byebug'
 require 'bundler/setup'
-require 'nano'
+require 'recollect'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

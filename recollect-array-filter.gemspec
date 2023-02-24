@@ -4,15 +4,15 @@
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require 'nano/version'
+require 'recollect/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'nano-collection-filter'
-  s.version     = Nano::VERSION
+  s.name        = 'recollect-array-filter'
+  s.version     = Recollect::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ['Thadeu Esteves Jr']
   s.email       = ['tadeuu@gmail.com']
-  s.homepage    = 'https://github.com/thadeu/nano-collection-filter'
+  s.homepage    = 'https://github.com/thadeu/recollect-array-filter'
   s.summary     = '%q{Simple wrapper to filter array using Pure Ruby and conditions}'
   s.description = '%q{Filter in Array collection using predicates like Ransack gem.}'
   s.license = 'MIT'

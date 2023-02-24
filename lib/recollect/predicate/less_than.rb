@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module Nano
+module Recollect
   module LessThan
     def self.check!(item, iteratee, value)
-      fetched_value = TryFetchOrBlank[item, iteratee]
+      fetched_value = Utility::TryFetchOrBlank[item, iteratee]
       return false unless fetched_value
 
       fetched_value < value
@@ -12,7 +12,7 @@ module Nano
 
   module LessThanEqual
     def self.check!(item, iteratee, value)
-      fetched_value = TryFetchOrBlank[item, iteratee]
+      fetched_value = Utility::TryFetchOrBlank[item, iteratee]
       return false unless fetched_value
 
       fetched_value <= value
