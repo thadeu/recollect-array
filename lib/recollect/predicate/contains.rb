@@ -6,7 +6,7 @@ module Recollect
       fetched_value = Utility::TryFetchOrBlank[item, iteratee]
       return false unless fetched_value
 
-      fetched_value.to_s.match(/#{value}/)
+      Array(value).any? { |v| fetched_value.to_s.match(/#{v}/) }
     end
   end
 

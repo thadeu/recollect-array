@@ -55,24 +55,36 @@ gem 'recollect-array-filter'
 
 Without configuration, because we use only Ruby. ❤️
 
-## Availables Predicates
+## Availables Predicates for all values
 
-| Type | suffix |
-| ----------- | ----------- |
-| Equal | eq      |
-| NotEqual | noteq        |
-| Contains | cont        |
-| NotContains | notcont        |
-| Included | in        |
-| NotIncluded | notin        |
-| Start | start        |
-| NotStart | notstart        |
-| End | end        |
-| NotEnd | notend        |
-| LessThan | lt        |
-| LessThanEqual | lteq        |
-| GreaterThan | gt        |
-| GreaterThanEqual | gteq        |
+| Type | Suffix | Value | 
+| ----------- | ----------- | ----------- |
+| Equal | eq      | Anywhere |
+| NotEqual | noteq        | Anywhere |
+| Contains | cont        | Anywhere |
+| NotContains | notcont        | Anywhere |
+| Included | in  | Anywhere |
+| NotIncluded | notin        | Anywhere |
+| Start | start        | Anywhere |
+| NotStart | notstart        | Anywhere |
+| End | end        | Anywhere |
+| NotEnd | notend        | Anywhere |
+| LessThan | lt        | Anywhere |
+| LessThanEqual | lteq        | Anywhere |
+| GreaterThan | gt        | Anywhere |
+| GreaterThanEqual | gteq        | Anywhere |
+
+## Availables Predicates only when value is Hash
+
+> 💡 Below predicates works only when value is Hash
+
+| Type | Suffix | Value | 
+| ----------- | ----------- | ----------- |
+| NotEqual | not_eq        | Hash |
+| NotContains | not_cont        | Hash |
+| NotIncluded | not_in        | Hash |
+| NotStart | not_start        | Hash |
+| NotEnd | not_end        | Hash |
 
 
 ## Usage
@@ -113,9 +125,137 @@ Without configuration, because we use only Ruby. ❤️
   ```
 </details>
 
-So, you can use many predicate to filter array. For example:
+You can use one or multiples predicates in your filter. We see some use cases.
 
-## Equal
+### Flexible Use Case (Hash)
+
+**Equal**
+
+```ruby
+filters = {
+  active: {
+    eq: true
+  }
+}
+
+collection = Recollect::Array.filter(data, filters)
+```
+
+**NotEqual**
+
+```ruby
+filters = {
+  active: {
+    # noteq or not_eq
+    not_eq: true
+  }
+}
+
+collection = Recollect::Array.filter(data, filters)
+```
+
+**Nested Hash Paths**
+
+```ruby
+filters = {
+  'schedule.all_day': {
+    eq: true
+  }
+}
+
+collection = Recollect::Array.filter(data, filters)
+```
+
+**Nested Array Paths**
+
+> Note the `.0` 🎉
+
+```ruby
+filters = {
+  'numbers.0': {
+    eq: '3'
+  }
+}
+
+collection = Recollect::Array.filter(data, filters)
+```
+
+```ruby
+filters = {
+  numbers: {
+    in: '3' # or in: ['3']
+  }
+}
+
+collection = Recollect::Array.filter(data, filters)
+```
+
+If array, you can navigate into self, using `property.NUMBER.property`
+
+```ruby
+data = [
+  {
+    schedules: [
+      {
+        opened: true,
+        all_day: true
+      },
+      {
+        opened: false,
+        all_day: true
+      }
+    ]
+  },
+  {
+    schedules: [
+      {
+        opened: false,
+        all_day: true
+      },
+      {
+        opened: false,
+        all_day: true
+      }
+    ]
+  }
+]
+
+filters = {
+  'schedules.0.opened': {
+    eq: true
+  }
+}
+
+collection = Recollect::Array.filter(data, filters)
+```
+
+**Combine conditions**
+
+Yes, you can combine one or multiple predicates to filter you array.
+
+
+```ruby
+filters = {
+  active: { eq: true },
+  numbers: {
+    in: %w[5],
+    not_in: '10'
+  },
+  email: {
+    cont: 'email1',
+    not_cont: '@gmail'
+  },
+  'schedule.all_day': {
+    in: [true, false]
+  }
+}
+
+collection = Recollect::Array.filter(data, filters)
+```
+
+### Querystring Use Case
+
+**Equal**
 
 ```ruby
 filters = { active_eq: true }
@@ -123,7 +263,7 @@ filters = { active_eq: true }
 collection = Recollect::Array.filter(data, filters)
 ```
 
-## NotEqual
+**NotEqual**
 
 ```ruby
 filters = { active_noteq: true }
@@ -131,7 +271,7 @@ filters = { active_noteq: true }
 collection = Recollect::Array.filter(data, filters)
 ```
 
-## Nested Hash Paths
+**Nested Hash Paths**
 
 ```ruby
 filters = { 'schedule.all_day_eq': false }
@@ -139,7 +279,7 @@ filters = { 'schedule.all_day_eq': false }
 collection = Recollect::Array.filter(data, filters)
 ```
 
-## Nested Array Paths
+**Nested Array Paths**
 
 > Note the `.0` 🎉
 
@@ -157,7 +297,7 @@ collection = Recollect::Array.filter(data, filters)
 expect(collection.result.size).to eq(1)
 ```
 
-## Combine conditions
+**Combine conditions**
 
 Yes, you can combine one or multiple predicates to filter you array.
 

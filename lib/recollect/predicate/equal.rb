@@ -2,11 +2,8 @@
 
 module Recollect
   module Equal
-    def self.check!(item, iteratee, value)
-      fetched_value = Utility::TryFetchOrBlank[item, iteratee]
-      return false unless fetched_value
-
-      fetched_value == value
+    def self.check!(item, iteratee, expected_value)
+      expected_value == Utility::TryFetchOrBlank[item, iteratee]
     end
   end
 

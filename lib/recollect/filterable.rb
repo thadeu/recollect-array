@@ -26,15 +26,27 @@ module Recollect
     def __apply_filter_callback
       lambda do |target|
         key, value = target
-        parts = key.to_s.split('_')
-        predicate = parts.pop
-        iteratee = parts.join('_')
-        klass = Predicate.call(predicate)
 
-        next unless !!klass
+        case value.class.to_s
+        when 'Hash'
+          value.each do |predicate, item_value|
+            klass = Predicate.call(predicate)
 
-        @result.filter! do |item|
-          klass.check!(item, iteratee, value)
+            @result.filter! do |item|
+              klass.check!(item, key, item_value)
+            end
+          end
+        else
+          parts = key.to_s.split('_')
+          predicate = parts.pop
+          iteratee = parts.join('_')
+          klass = Predicate.call(predicate)
+
+          next unless !!klass
+
+          @result.filter! do |item|
+            klass.check!(item, iteratee, value)
+          end
         end
       end
     end
@@ -43,13 +55,13 @@ module Recollect
 
   Predicate = lambda do |named|
     {
-      eq: Equal, noteq: NotEqual,
-      cont: Contains, notcont: NotContains,
+      eq: Equal, noteq: NotEqual, not_eq: NotEqual,
+      cont: Contains, notcont: NotContains, not_cont: NotContains,
       lt: LessThan, lteq: LessThanEqual,
       gt: GreaterThan, gteq: GreaterThanEqual,
-      start: Startify, notstart: NotStartify,
-      end: Endify, notend: NotEndify,
-      in: Included, notin: NotIncluded
+      start: Startify, notstart: NotStartify, not_start: NotStartify,
+      end: Endify, notend: NotEndify, not_end: NotEndify,
+      in: Included, notin: NotIncluded, not_in: NotIncluded
     }[named.to_sym]
   end
   private_constant :Predicate
