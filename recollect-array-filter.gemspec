@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   s.authors     = ['Thadeu Esteves Jr']
   s.email       = ['tadeuu@gmail.com']
   s.homepage    = 'https://github.com/thadeu/recollect-array-filter'
-  s.summary     = '%q{Simple wrapper to filter array using Ruby and simple predicate conditions}'
-  s.description = '%q{Filter collections using predicates like Ransack gem.}'
+  s.summary     = 'Simple wrapper to filter array using Ruby and simple predicate conditions'
+  s.description = 'Filter collections using predicates like Ransack gem.'
   s.license = 'MIT'
 
   s.add_development_dependency 'bundler', '>= 2.3'
