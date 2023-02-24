@@ -156,7 +156,7 @@ filters = {
   active_noteq: true,
   numbers_in: %w[5],
   email_cont: 'test3',
-  'schedule.all_day': false
+  'schedule.all_day_eq': false
 }
 
 collection = Nano::Collection::Search.apply(data, filters)
