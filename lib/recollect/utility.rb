@@ -2,6 +2,31 @@
 
 module Recollect
   module Utility
+    module Keys
+      extend self
+
+      DELIMITER_REGEX = /\[|\]|\./
+
+      def to_ary(key)
+        return [] if key.empty?
+
+        key.to_s.split(DELIMITER_REGEX).reject(&:empty?)
+      end
+      alias [] to_ary
+
+      def to_dig(key)
+        enforce_level = ->(level) do
+          if level.is_a?(Integer) || level.match?(/^\d$/)
+            level.to_i
+          else
+            level.to_sym
+          end
+        end
+
+        Keys[key].map(&enforce_level)
+      end
+    end
+
     # ### Utility::TryFetchOrBlank
     # `fetch value into hash, like Lodash.get`
     #
@@ -18,19 +43,21 @@ module Recollect
     # ````
     # hash = { a: 1, b: { c: 2 }, d: [{ e: 3 }] }
     # Utility::TryFetchOrBlank.(hash, 'd.0.e')
-    # ````
-    TryFetchOrBlank = lambda do |data, *keys|
-      keys.reduce(data) do |memo, key|
-        symbolized_keys = key.to_s.split('.').map do |k|
-          if k.is_a?(Numeric) || k.match?(/\d/)
-            k.to_i
-          else
-            k.to_sym
-          end
-        end
 
-        memo.dig(*symbolized_keys)
+    # hash = { a: 1, b: { c: 2 }, d: [{ e: 3 }] }
+    # Utility::TryFetchOrBlank.(hash, 'd[0]e')
+
+    # hash = { a: 1, b: { c: 2 }, d: [{ e: 3 }] }
+    # Utility::TryFetchOrBlank.(hash, 'd.[0].e')
+    # ````
+    TryFetchOrBlank = ->(data, *keys) do
+      reducer = ->(memo, key) do
+        memo.dig(*Keys.to_dig(key))
+      rescue StandardError
+        nil
       end
+
+      keys.reduce(data, &reducer)
     end
   end
 end

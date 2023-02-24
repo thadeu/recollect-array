@@ -31,15 +31,44 @@ RSpec.describe Recollect::Utility::TryFetchOrBlank do
   end
 
   context 'Array' do
-    it 'check array levels' do
-      hash = { a: 1, b: { c: 2 }, d: ['1'] }
-      expect(described_class.call(hash, 'd.0')).to eq('1')
+    subject(:result) { described_class.call(hash, iteratee) }
+
+    context 'iteratee one level' do
+      let(:hash) { { a: 1, b: { c: 2 }, d: ['1'] } }
+      let(:iteratee) { 'd.0' }
+
+      it { expect(result).to eq('1') }
     end
 
-    it 'check array + hash levels' do
-      hash = { a: 1, b: { c: 2 }, d: [{ e: 3 }] }
+    context 'iteratee one level' do
+      let(:hash) { { a: 1, b: { c: 2 }, d: [{ e: 3 }] } }
+      let(:iteratee) { 'd.0.e' }
 
-      expect(described_class[hash, 'd.0.e']).to eq(3)
+      it { expect(result).to eq(3) }
+    end
+
+    context 'iteratee nested levels on the complex hash' do
+      let(:hash) do
+        {
+          a: 1,
+          b: { c: 2 },
+          d: [
+            {
+              e: [
+                { e1: 1 },
+                { e2: 2 },
+                { e3: 3 }
+              ]
+            }
+          ]
+        }
+      end
+
+      it { expect(described_class[hash, 'd.0.e.2.e3']).to eq(3) }
+      it { expect(described_class[hash, 'd.0.e.[2].e3']).to eq(3) }
+      it { expect(described_class[hash, 'd.0.e[2].e3']).to eq(3) }
+      it { expect(described_class[hash, 'd[0]e.2.e3']).to eq(3) }
+      it { expect(described_class[hash, 'd.[0].e[1]e2']).to eq(2) }
     end
   end
 end
