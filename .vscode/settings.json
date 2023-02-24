@@ -1,0 +1,3 @@
+{
+  "vscode-run-rspec-file.custom-command": "bundle exec rspec --color"
+}

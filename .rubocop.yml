@@ -1,0 +1,58 @@
+Style/Documentation:
+  Enabled: false
+
+Style/DocumentationMethod:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/LineLength:
+  Max: 150
+
+Layout/FirstArrayElementIndentation:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: true
+
+Layout/FirstHashElementIndentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  SafeAutoCorrect: true
+  Exclude:
+    - bin/**/*
+    - config.ru
+    - Gemfile
+    - Rakefile
+
+AllCops:
+  DisabledByDefault: false
+  NewCops: enable
+  TargetRubyVersion: 3.1
+  Exclude:
+    - 'spec/factories/*.rb'
+    - 'db/schema.rb'
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%i': '()'
+
+Lint/DeprecatedConstants:
+  Enabled: true
