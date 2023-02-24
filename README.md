@@ -5,7 +5,7 @@
 
 <p align="center">
   <a href="https://rubygems.org/gems/recollect-array-filter">
-    <img alt="Gem" src="https://img.shields.io/gem/v/recollect-array-filter.svg?style=flat-square">
+    <img alt="Gem" src="https://img.shields.io/gem/v/recollect-array-filter.svg">    
   </a>
 
   <a href="https://github.com/thadeu/recollect-array-filter/actions/workflows/ci.yml">
