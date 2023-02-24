@@ -9,7 +9,7 @@ module Recollect
     end
 
     # Available filter
-    private attr_accessor :filters
+    attr_accessor :filters
 
     attr_reader :result
 
