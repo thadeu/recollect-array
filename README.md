@@ -315,7 +315,7 @@ collection = Recollect::Array.filter(data, filters)
 
 ## Utilities
 
-### Recollect::Hash.get(hash, path)
+### Recollect::Hashie.get(hash, path)
 
 ```ruby
 user = {
@@ -328,16 +328,16 @@ user = {
   count: 9
 }
 
-result = Recollect::Hash.get(user, 'id')
+result = Recollect::Hashie.get(user, 'id')
 -> 1
 
-result = Recollect::Hash.get(user, 'schedule.all_day')
+result = Recollect::Hashie.get(user, 'schedule.all_day')
 -> true
 
-result = Recollect::Hash.get(user, 'numbers')
+result = Recollect::Hashie.get(user, 'numbers')
 -> ['1', '2']
 
-result = Recollect::Hash.get(user, 'numbers.0')
+result = Recollect::Hashie.get(user, 'numbers.0')
 -> 1
 ```
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Recollect
-  module Hash
+  module Hashie
     # ### Hash.get
     # `fetch value into hash, like Lodash.get`
     #

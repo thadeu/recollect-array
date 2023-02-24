@@ -25,7 +25,7 @@ module Recollect
     def pluck(data, iteratee)
       return [] unless data.any?
 
-      data.map { |item| Hash.get(item, iteratee) }
+      data.map { |item| Hashie.get(item, iteratee) }
     end
     module_function :pluck
   end

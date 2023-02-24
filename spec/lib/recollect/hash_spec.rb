@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Recollect::Hash do
+RSpec.describe Recollect::Hashie do
   let(:hash) do
     {
       user: {
