@@ -374,6 +374,25 @@ filters = {
 collection = Recollect::Array.filter(data, filters)
 ```
 
+**Receive querystring in your route**
+
+Like Ransack, imagine that you receive an querystring and you want to filter your Array. So, you can to do something like this.
+
+> ⚠️ But security is your responsability, ok? Let's go!
+
+```ruby
+# receive querystring in your route
+querystring = "active_noteq=true&numbers_in=5&email_cont=test3&schedule.all_day_eq=false"
+
+# parse querystring and transform to Hash
+params = URI.decode_www_form(querystring).to_h
+
+# filter your collection using params directly.
+collection = Recollect::Array.filter(data, filters)
+
+# Beautiful, right? 🎉
+```
+
 ## Utilities
 
 ### Recollect::Hashie.get(hash, path)
