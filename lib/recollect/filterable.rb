@@ -27,8 +27,8 @@ module Recollect
       lambda do |target|
         key, value = target
 
-        case value.class.to_s
-        when 'Hash'
+        case value
+        when ::Hash
           value.each do |predicate, item_value|
             klass = Predicate.call(predicate)
 
