@@ -29,16 +29,16 @@ module Nano
       private_class_method :new
 
       def apply!
-        @filters.each(&apply_filter_callback)
+        @filters.each(&__apply_filter_callback)
       end
 
-      def apply_filter_callback
+      private def __apply_filter_callback
         lambda do |target|
           key, value = target
           parts = key.to_s.split('_')
           predicate = parts.pop
           iteratee = parts.join('_')
-          klass = create_predicate(predicate)
+          klass = __create_predicate(predicate)
 
           next unless !!klass
 
@@ -47,9 +47,8 @@ module Nano
           end
         end
       end
-      private_class_method :private
 
-      def create_predicate(predicate = 'eq')
+      private def __create_predicate(predicate = 'eq')
         {
           eq: Equal, noteq: NotEqual,
           cont: Contains, notcont: NotContains,
