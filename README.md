@@ -126,7 +126,7 @@ collection = Nano::Collection::Search.apply(data, filters)
 ## Nested Hash Paths
 
 ```ruby
-filters = { 'schedule.all_day': false }
+filters = { 'schedule.all_day_eq': false }
 
 collection = Nano::Collection::Search.apply(data, filters)
 ```
@@ -136,9 +136,17 @@ collection = Nano::Collection::Search.apply(data, filters)
 > Note the `.0` 🎉
 
 ```ruby
-filters = { 'numbers.0': '3' }
+filters = { 'numbers.0_eq': '3' }
 
 collection = Nano::Collection::Search.apply(data, filters)
+```
+
+```ruby
+filters = { numbers_in: ['1'] }
+
+collection = Nano::Collection::Search.apply(data, filters)
+
+expect(collection.result.size).to eq(1)
 ```
 
 ## Combine conditions
