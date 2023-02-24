@@ -8,9 +8,6 @@ module Recollect
       instance
     end
 
-    # Original data
-    private attr_accessor :data
-
     # Available filter
     private attr_accessor :filters
 
