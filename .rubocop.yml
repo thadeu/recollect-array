@@ -47,6 +47,7 @@ AllCops:
   Exclude:
     - 'spec/factories/*.rb'
     - 'db/schema.rb'
+    - recollect-array-filter.gemspec
 
 Lint/AmbiguousBlockAssociation:
   Exclude:
