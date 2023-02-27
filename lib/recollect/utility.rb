@@ -52,7 +52,7 @@ module Recollect
     # ````
     TryFetchOrBlank = ->(data, *keys) do
       reducer = ->(memo, key) do
-        memo.dig(*Keys.to_dig(key))
+        memo.to_h.dig(*Keys.to_dig(key))
       rescue StandardError
         nil
       end
