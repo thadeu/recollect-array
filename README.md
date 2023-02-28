@@ -1,15 +1,15 @@
 <p align="center">
-  <h1 align="center">🔃 recollect-array-filter</h1>
+  <h1 align="center">🔃 recollect-array</h1>
   <p align="center"><i>Simple wrapper to filter array using Ruby and simple predicate conditions</i></p>
 </p>
 
 <p align="center">
-  <a href="https://rubygems.org/gems/recollect-array-filter">
-    <img alt="Gem" src="https://img.shields.io/gem/v/recollect-array-filter.svg">    
+  <a href="https://rubygems.org/gems/recollect-array">
+    <img alt="Gem" src="https://img.shields.io/gem/v/recollect-array.svg">    
   </a>
 
-  <a href="https://github.com/thadeu/recollect-array-filter/actions/workflows/ci.yml">
-    <img alt="Build Status" src="https://github.com/thadeu/recollect-array-filter/actions/workflows/ci.yml/badge.svg">
+  <a href="https://github.com/thadeu/recollect-array/actions/workflows/ci.yml">
+    <img alt="Build Status" src="https://github.com/thadeu/recollect-array/actions/workflows/ci.yml/badge.svg">
   </a>
 </p>
 
@@ -22,7 +22,7 @@ Because in sometimes, we need filter array passing conditions. This gem simplify
 
 Version    | Documentation
 ---------- | -------------
-unreleased | https://github.com/thadeu/recollect-array-filter/blob/main/README.md
+unreleased | https://github.com/thadeu/recollect-array/blob/main/README.md
 
 ## Table of Contents <!-- omit in toc -->
   - [Installation](#installation)
@@ -42,13 +42,13 @@ unreleased | https://github.com/thadeu/recollect-array-filter/blob/main/README.m
 Use bundle
 
 ```ruby
-bundle add recollect-array-filter
+bundle add recollect-array
 ```
 
 or add this line to your application's Gemfile.
 
 ```ruby
-gem 'recollect-array-filter'
+gem 'recollect-array'
 ```
 
 ## Configuration
@@ -469,7 +469,7 @@ To install this gem onto your local machine, run `bundle install`. To release a 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/thadeu/recollect-array-filter. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/thadeu/recollect-array-filter/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/thadeu/recollect-array. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/thadeu/recollect-array/blob/master/CODE_OF_CONDUCT.md).
 
 
 ## License
