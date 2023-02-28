@@ -2,6 +2,6 @@
 
 module Recollect
   module Array
-    VERSION = '0.0.4-1'
+    VERSION = '0.0.4.pre.1'
   end
 end
