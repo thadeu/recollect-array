@@ -3,7 +3,7 @@
 module Recollect
   module Array
     require_relative 'array/utility'
-    require_relative 'array/hash'
+    require_relative 'array/hashie'
 
     require_relative 'array/predicate/startify'
     require_relative 'array/predicate/endify'
