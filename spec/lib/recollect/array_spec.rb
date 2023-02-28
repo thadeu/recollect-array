@@ -42,7 +42,7 @@ RSpec.describe Recollect::Array do
 
         collection = described_class.filter(data, filters)
 
-        expect(collection.result.size).to eq(2)
+        expect(collection.size).to eq(2)
       end
       
       it 'returns only filters items' do
@@ -50,7 +50,7 @@ RSpec.describe Recollect::Array do
 
         collection = described_class.filter(data, active: false, count: 99, 'schedule.all_day': true, 'schedule.opened': true)
 
-        expect(collection.result.size).to eq(1)
+        expect(collection.size).to eq(1)
       end
 
       it 'returns only filters items' do
@@ -58,7 +58,7 @@ RSpec.describe Recollect::Array do
 
         collection = described_class.filter(data, filters)
 
-        expect(collection.result.size).to eq(1)
+        expect(collection.size).to eq(1)
       end
 
       it 'returns only filters items' do
@@ -66,7 +66,7 @@ RSpec.describe Recollect::Array do
 
         collection = described_class.filter(data, filters)
 
-        expect(collection.result.size).to eq(1)
+        expect(collection.size).to eq(1)
       end
     end
   end

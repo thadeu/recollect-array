@@ -42,7 +42,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(2)
+        expect(collection.size).to eq(2)
       end
       
       it 'returns only filters items' do
@@ -50,7 +50,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(2)
+        expect(collection.size).to eq(2)
       end
 
       it 'returns only filters items' do
@@ -58,7 +58,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(1)
+        expect(collection.size).to eq(1)
       end
 
       it 'returns only filters items' do
@@ -66,7 +66,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(1)
+        expect(collection.size).to eq(1)
       end
 
       it 'returns only filters items' do
@@ -74,7 +74,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(1)
+        expect(collection.size).to eq(1)
       end
     end
 
@@ -89,7 +89,7 @@ RSpec.describe Recollect::Array::Filterable do
 
           collection = described_class.call(data, filters)
 
-          expect(collection.result.size).to eq(2)
+          expect(collection.size).to eq(2)
         end
 
         it 'returns only filters items' do
@@ -100,7 +100,7 @@ RSpec.describe Recollect::Array::Filterable do
 
           collection = described_class.call(data, filters)
 
-          expect(collection.result.size).to eq(1)
+          expect(collection.size).to eq(1)
         end
 
         it 'returns only filters items' do
@@ -112,7 +112,7 @@ RSpec.describe Recollect::Array::Filterable do
 
           collection = described_class.call(data, filters)
 
-          expect(collection.result.size).to eq(1)
+          expect(collection.size).to eq(1)
         end
       end
 
@@ -121,7 +121,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(2)
+        expect(collection.size).to eq(2)
       end
 
       it 'returns only filters items' do
@@ -129,7 +129,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(1)
+        expect(collection.size).to eq(1)
       end
 
       it 'returns only filters items' do
@@ -140,7 +140,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(1)
+        expect(collection.size).to eq(1)
       end
 
       it 'returns only filters items' do
@@ -151,7 +151,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(2)
+        expect(collection.size).to eq(2)
       end
 
       it 'returns only filters items' do
@@ -162,7 +162,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(0)
+        expect(collection.size).to eq(0)
       end
     end
   end
@@ -173,7 +173,7 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(1)
+      expect(collection.size).to eq(1)
     end
   end
 
@@ -183,8 +183,8 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(1)
-      expect(collection.result.first[:name]).to eq('Test #3')
+      expect(collection.size).to eq(1)
+      expect(collection.first[:name]).to eq('Test #3')
     end
 
     it 'returns only filters items' do
@@ -196,11 +196,11 @@ RSpec.describe Recollect::Array::Filterable do
       }
 
       collection = described_class.call(data, filters)
-      collect_ids = Recollect::Array.pluck(collection.result, 'id')
+      collect_ids = Recollect::Array.pluck(collection, 'id')
 
       expected_ids = [1]
 
-      expect(collection.result.size).to eq(1)
+      expect(collection.size).to eq(1)
       expect(collect_ids).to eq(expected_ids)
     end
   end
@@ -211,8 +211,8 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(2)
-      expect(collection.result.first[:name]).to eq('Test #1')
+      expect(collection.size).to eq(2)
+      expect(collection.first[:name]).to eq('Test #1')
     end
   end
 
@@ -222,7 +222,7 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(1)
+      expect(collection.size).to eq(1)
     end
   end
 
@@ -232,7 +232,7 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(2)
+      expect(collection.size).to eq(2)
     end
   end
 
@@ -242,7 +242,7 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(1)
+      expect(collection.size).to eq(1)
     end
   end
 
@@ -252,7 +252,7 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(2)
+      expect(collection.size).to eq(2)
     end
   end
 
@@ -262,7 +262,7 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(1)
+      expect(collection.size).to eq(1)
     end
 
     it 'returns only filters items' do
@@ -270,7 +270,7 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(1)
+      expect(collection.size).to eq(1)
     end
 
     it 'returns only filters items' do
@@ -278,7 +278,7 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(1)
+      expect(collection.size).to eq(1)
     end
   end
 
@@ -288,7 +288,7 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(1)
+      expect(collection.size).to eq(1)
     end
 
     it 'returns only filters items' do
@@ -296,7 +296,7 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(1)
+      expect(collection.size).to eq(1)
     end
 
     it 'returns only filters items' do
@@ -304,7 +304,7 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(1)
+      expect(collection.size).to eq(1)
     end
   end
 
@@ -314,7 +314,7 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(2)
+      expect(collection.size).to eq(2)
     end
   end
 
@@ -324,7 +324,7 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(2)
+      expect(collection.size).to eq(2)
     end
   end
 
@@ -336,7 +336,7 @@ RSpec.describe Recollect::Array::Filterable do
 
       collection = described_class.call(data, filters)
 
-      expect(collection.result.size).to eq(3)
+      expect(collection.size).to eq(3)
     end
 
     context 'when value is Array' do
@@ -345,7 +345,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(1)
+        expect(collection.size).to eq(1)
       end
     end
 
@@ -359,11 +359,11 @@ RSpec.describe Recollect::Array::Filterable do
         }
 
         collection = described_class.call(data, filters)
-        collect_ids = Recollect::Array.pluck(collection.result, 'id')
+        collect_ids = Recollect::Array.pluck(collection, 'id')
 
         expected_ids = [1]
 
-        expect(collection.result.size).to eq(1)
+        expect(collection.size).to eq(1)
         expect(collect_ids).to eq(expected_ids)
       end
 
@@ -372,7 +372,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(1)
+        expect(collection.size).to eq(1)
       end
     end
 
@@ -382,7 +382,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(2)
+        expect(collection.size).to eq(2)
       end
 
       it 'returns only filters items' do
@@ -390,7 +390,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(3)
+        expect(collection.size).to eq(3)
       end
     end
   end
@@ -402,7 +402,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(2)
+        expect(collection.size).to eq(2)
       end
 
       it 'returns only filters items' do
@@ -410,7 +410,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(1)
+        expect(collection.size).to eq(1)
       end
     end
 
@@ -420,7 +420,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         collection = described_class.call(data, filters)
 
-        expect(collection.result.size).to eq(2)
+        expect(collection.size).to eq(2)
       end
     end
   end

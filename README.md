@@ -371,7 +371,7 @@ filters = { numbers_in: ['1'] }
 
 collection = Recollect::Array.filter(data, filters)
 
-expect(collection.result.size).to eq(1)
+expect(collection.size).to eq(1)
 ```
 
 **Combine conditions**

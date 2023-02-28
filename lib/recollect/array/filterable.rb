@@ -5,8 +5,9 @@ module Recollect
     class Filterable
       def self.call(data, filters)
         instance = new(data, filters)
+        
         instance.call!
-        instance
+        instance.result
       end
 
       PREDICATES = %w[
