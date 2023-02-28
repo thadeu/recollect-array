@@ -51,6 +51,12 @@ or add this line to your application's Gemfile.
 gem 'recollect-array'
 ```
 
+and then, require module
+
+```ruby
+require 'recollect/array'
+```
+
 ## Configuration
 
 Without configuration, because we use only Ruby. ❤️
