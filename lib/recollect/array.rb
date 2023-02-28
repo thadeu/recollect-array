@@ -1,19 +1,18 @@
 # frozen_string_literal: true
 
+require 'recollect/array/utility'
+require 'recollect/array/hashie'
+require 'recollect/array/predicate/startify'
+require 'recollect/array/predicate/endify'
+require 'recollect/array/predicate/equal'
+require 'recollect/array/predicate/contains'
+require 'recollect/array/predicate/in'
+require 'recollect/array/predicate/less_than'
+require 'recollect/array/predicate/greater_than'
+require 'recollect/array/filterable'
+
 module Recollect
   module Array
-    require_relative 'array/utility'
-    require_relative 'array/hashie'
-
-    require_relative 'array/predicate/startify'
-    require_relative 'array/predicate/endify'
-    require_relative 'array/predicate/equal'
-    require_relative 'array/predicate/contains'
-    require_relative 'array/predicate/in'
-    require_relative 'array/predicate/less_than'
-    require_relative 'array/predicate/greater_than'
-
-    require_relative 'array/filterable'
 
     # ### Array.filter
     # `filter value into Array using conditions
