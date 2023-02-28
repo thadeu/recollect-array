@@ -9,6 +9,28 @@ module Recollect
         instance
       end
 
+      PREDICATES = %w[
+        eq
+        noteq
+        not_eq
+        cont
+        notcont
+        not_cont
+        lt
+        lteq
+        gt
+        gteq
+        start
+        notstart
+        not_start
+        end
+        notend
+        not_end
+        in
+        notin
+        not_in
+      ].freeze
+
       # Available filter
       attr_accessor :filters
 
@@ -30,21 +52,28 @@ module Recollect
 
           case value
           when ::Hash
-            value.each do |predicate, item_value|
+            value.each do |predicate, hash_value|
               klass = Predicate.call(predicate)
 
               @result.filter! do |item|
-                case item_value
+                case hash_value
                 when Proc, Module
-                  klass.check!(item, key, item_value.call)
+                  klass.check!(item, key, hash_value.call)
                 else
-                  klass.check!(item, key, item_value)
+                  klass.check!(item, key, hash_value)
                 end
               end
             end
           else
             parts = key.to_s.split('_')
-            predicate = parts.size == 1 ? :eq : parts.pop
+
+            predicate = Array(parts[-2..]).filter do |pkey| 
+              next unless PREDICATES.include? pkey
+
+              parts = parts - [pkey]
+              pkey
+            end&.last || :eq
+
             iteratee = parts.join('_')
             klass = Predicate.call(predicate)
 
@@ -61,13 +90,25 @@ module Recollect
 
     Predicate = lambda do |named|
       {
-        eq: Equal, noteq: NotEqual, not_eq: NotEqual,
-        cont: Contains, notcont: NotContains, not_cont: NotContains,
-        lt: LessThan, lteq: LessThanEqual,
-        gt: GreaterThan, gteq: GreaterThanEqual,
-        start: Startify, notstart: NotStartify, not_start: NotStartify,
-        end: Endify, notend: NotEndify, not_end: NotEndify,
-        in: Included, notin: NotIncluded, not_in: NotIncluded
+        eq: Equal,
+        noteq: NotEqual,
+        not_eq: NotEqual,
+        cont: Contains,
+        notcont: NotContains,
+        not_cont: NotContains,
+        lt: LessThan,
+        lteq: LessThanEqual,
+        gt: GreaterThan,
+        gteq: GreaterThanEqual,
+        start: Startify,
+        notstart: NotStartify,
+        not_start: NotStartify,
+        end: Endify,
+        notend: NotEndify,
+        not_end: NotEndify,
+        in: Included,
+        notin: NotIncluded,
+        not_in: NotIncluded
       }[named.to_sym || :eq]
     end
     private_constant :Predicate

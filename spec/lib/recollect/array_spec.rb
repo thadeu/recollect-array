@@ -18,7 +18,7 @@ RSpec.describe Recollect::Array do
         id: 2,
         name: 'Test #2',
         email: 'test2@email2.com',
-        schedule: { all_day: false },
+        schedule: { all_day: false, opened: false },
         numbers: %w[3 4],
         active: true,
         count: 10
@@ -27,7 +27,7 @@ RSpec.describe Recollect::Array do
         id: 3,
         name: 'Test #3',
         email: 'test3@email3.com',
-        schedule: { all_day: false },
+        schedule: { all_day: false, opened: true },
         numbers: %w[5 6],
         active: false,
         count: 99
@@ -43,6 +43,14 @@ RSpec.describe Recollect::Array do
         collection = described_class.filter(data, filters)
 
         expect(collection.result.size).to eq(2)
+      end
+      
+      it 'returns only filters items' do
+        data.push({ active: false, count: 99, schedule: { all_day: true, opened: true } })
+
+        collection = described_class.filter(data, active: false, count: 99, 'schedule.all_day': true, 'schedule.opened': true)
+
+        expect(collection.result.size).to eq(1)
       end
 
       it 'returns only filters items' do
