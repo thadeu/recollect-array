@@ -196,6 +196,16 @@ filters = {
 collection = Recollect::Array.filter(data, filters)
 ```
 
+Using default Equal predicate.
+
+```ruby
+Recollect::Array.filter(data, numbers: 3)
+
+Recollect::Array.filter(data, active: true)
+
+Recollect::Array.filter(data, id: 3)
+```
+
 If array, you can navigate into self, using `property.NUMBER.property`
 
 ```ruby
