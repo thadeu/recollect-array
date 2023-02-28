@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Recollect::Filterable do
+RSpec.describe Recollect::Array::Filterable do
   let(:data) do
     [
       {
@@ -40,7 +40,7 @@ RSpec.describe Recollect::Filterable do
       it 'returns only filters items' do
         filters = { active_eq: true }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(2)
       end
@@ -48,7 +48,7 @@ RSpec.describe Recollect::Filterable do
       it 'returns only filters items' do
         filters = { 'schedule.all_day_eq': true }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(1)
       end
@@ -56,7 +56,7 @@ RSpec.describe Recollect::Filterable do
       it 'returns only filters items' do
         filters = { 'numbers.0_eq': '1' }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(1)
       end
@@ -64,7 +64,7 @@ RSpec.describe Recollect::Filterable do
       it 'returns only filters items' do
         filters = { 'numbers.0._eq': '3' }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(1)
       end
@@ -79,7 +79,7 @@ RSpec.describe Recollect::Filterable do
             }
           }
 
-          collection = Recollect::Filterable.call(data, filters)
+          collection = described_class.call(data, filters)
 
           expect(collection.result.size).to eq(2)
         end
@@ -90,7 +90,7 @@ RSpec.describe Recollect::Filterable do
             numbers: { in: NumbersAvailable }
           }
 
-          collection = Recollect::Filterable.call(data, filters)
+          collection = described_class.call(data, filters)
 
           expect(collection.result.size).to eq(1)
         end
@@ -102,7 +102,7 @@ RSpec.describe Recollect::Filterable do
             }
           }
 
-          collection = Recollect::Filterable.call(data, filters)
+          collection = described_class.call(data, filters)
 
           expect(collection.result.size).to eq(1)
         end
@@ -111,7 +111,7 @@ RSpec.describe Recollect::Filterable do
       it 'returns only filters items' do
         filters = { active: { eq: true } }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(2)
       end
@@ -119,7 +119,7 @@ RSpec.describe Recollect::Filterable do
       it 'returns only filters items' do
         filters = { 'schedule.all_day': { eq: true } }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(1)
       end
@@ -130,7 +130,7 @@ RSpec.describe Recollect::Filterable do
           'schedule.opened': { eq: true }
         }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(1)
       end
@@ -141,7 +141,7 @@ RSpec.describe Recollect::Filterable do
           'schedule.all_day': { eq: false }
         }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(2)
       end
@@ -152,7 +152,7 @@ RSpec.describe Recollect::Filterable do
           name: { cont: 'Test', notcont: '#1' }
         }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(0)
       end
@@ -163,7 +163,7 @@ RSpec.describe Recollect::Filterable do
     it 'returns only filters items' do
       filters = { active_noteq: true }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -173,7 +173,7 @@ RSpec.describe Recollect::Filterable do
     it 'returns only filters items' do
       filters = { name_cont: '#3' }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(1)
       expect(collection.result.first[:name]).to eq('Test #3')
@@ -187,7 +187,7 @@ RSpec.describe Recollect::Filterable do
         }
       }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
       collect_ids = Recollect::Array.pluck(collection.result, 'id')
 
       expected_ids = [1]
@@ -201,7 +201,7 @@ RSpec.describe Recollect::Filterable do
     it 'returns only filters items' do
       filters = { name_notcont: '#3' }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(2)
       expect(collection.result.first[:name]).to eq('Test #1')
@@ -212,7 +212,7 @@ RSpec.describe Recollect::Filterable do
     it 'returns only filters items' do
       filters = { count_lt: 10 }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -222,7 +222,7 @@ RSpec.describe Recollect::Filterable do
     it 'returns only filters items' do
       filters = { count_lteq: 10 }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(2)
     end
@@ -232,7 +232,7 @@ RSpec.describe Recollect::Filterable do
     it 'returns only filters items' do
       filters = { count_gt: 10 }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -242,7 +242,7 @@ RSpec.describe Recollect::Filterable do
     it 'returns only filters items' do
       filters = { count_gteq: 10 }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(2)
     end
@@ -252,7 +252,7 @@ RSpec.describe Recollect::Filterable do
     it 'returns only filters items' do
       filters = { email_start: 'test1' }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -260,7 +260,7 @@ RSpec.describe Recollect::Filterable do
     it 'returns only filters items' do
       filters = { email_start: 'test2' }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -268,7 +268,7 @@ RSpec.describe Recollect::Filterable do
     it 'returns only filters items' do
       filters = { email_start: 'test3' }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -278,7 +278,7 @@ RSpec.describe Recollect::Filterable do
     it 'returns only filters items' do
       filters = { email_end: 'email1.com' }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -286,7 +286,7 @@ RSpec.describe Recollect::Filterable do
     it 'returns only filters items' do
       filters = { email_end: 'email2.com' }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -294,7 +294,7 @@ RSpec.describe Recollect::Filterable do
     it 'returns only filters items' do
       filters = { email_end: 'email3.com' }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(1)
     end
@@ -304,7 +304,7 @@ RSpec.describe Recollect::Filterable do
     it 'returns only filters items' do
       filters = { email_notstart: 'test1' }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(2)
     end
@@ -314,7 +314,7 @@ RSpec.describe Recollect::Filterable do
     it 'returns only filters items' do
       filters = { email_notend: 'email1.com' }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(2)
     end
@@ -326,7 +326,7 @@ RSpec.describe Recollect::Filterable do
         'schedule.opened': { in: [false, true] }
       }
 
-      collection = Recollect::Filterable.call(data, filters)
+      collection = described_class.call(data, filters)
 
       expect(collection.result.size).to eq(3)
     end
@@ -335,7 +335,7 @@ RSpec.describe Recollect::Filterable do
       it 'returns only filters items' do
         filters = { numbers_in: ['1'] }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(1)
       end
@@ -350,7 +350,7 @@ RSpec.describe Recollect::Filterable do
           }
         }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
         collect_ids = Recollect::Array.pluck(collection.result, 'id')
 
         expected_ids = [1]
@@ -362,7 +362,7 @@ RSpec.describe Recollect::Filterable do
       it 'returns only filters items' do
         filters = { numbers_in: '1' }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(1)
       end
@@ -372,7 +372,7 @@ RSpec.describe Recollect::Filterable do
       it 'returns only filters items' do
         filters = { active_in: [true] }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(2)
       end
@@ -380,7 +380,7 @@ RSpec.describe Recollect::Filterable do
       it 'returns only filters items' do
         filters = { active_in: [true, false] }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(3)
       end
@@ -392,7 +392,7 @@ RSpec.describe Recollect::Filterable do
       it 'returns only filters items' do
         filters = { numbers_notin: ['1'] }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(2)
       end
@@ -400,7 +400,7 @@ RSpec.describe Recollect::Filterable do
       it 'returns only filters items' do
         filters = { numbers_notin: %w[1 3] }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(1)
       end
@@ -410,7 +410,7 @@ RSpec.describe Recollect::Filterable do
       it 'returns only filters items' do
         filters = { numbers_notin: '1' }
 
-        collection = Recollect::Filterable.call(data, filters)
+        collection = described_class.call(data, filters)
 
         expect(collection.result.size).to eq(2)
       end

@@ -1,19 +1,21 @@
 # frozen_string_literal: true
 
-module Recollect
-  module Startify
+module Recollect::Array
+  module LessThan
     def self.check!(item, iteratee, value)
       fetched_value = Utility::TryFetchOrBlank[item, iteratee]
       return false unless fetched_value
 
-      regex = /^#{value}/
-      fetched_value.to_s.match?(regex)
+      fetched_value < value
     end
   end
 
-  module NotStartify
+  module LessThanEqual
     def self.check!(item, iteratee, value)
-      !Startify.check!(item, iteratee, value)
+      fetched_value = Utility::TryFetchOrBlank[item, iteratee]
+      return false unless fetched_value
+
+      fetched_value <= value
     end
   end
 end

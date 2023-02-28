@@ -4,15 +4,15 @@
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require 'recollect/version'
+require 'recollect/array/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'recollect-array-filter'
-  s.version     = Recollect::VERSION
+  s.name        = 'recollect-array'
+  s.version     = Recollect::Array::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ['Thadeu Esteves Jr']
   s.email       = ['tadeuu@gmail.com']
-  s.homepage    = 'https://github.com/thadeu/recollect-array-filter'
+  s.homepage    = 'https://github.com/thadeu/recollect-array'
   s.summary     = 'Simple wrapper to filter array using Ruby and simple predicate conditions'
   s.description = 'Filter collections using predicates like Ransack gem.'
   s.license = 'MIT'

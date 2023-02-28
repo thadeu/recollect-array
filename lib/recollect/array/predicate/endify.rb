@@ -1,21 +1,19 @@
 # frozen_string_literal: true
 
-module Recollect
-  module GreaterThan
+module Recollect::Array
+  module Endify
     def self.check!(item, iteratee, value)
       fetched_value = Utility::TryFetchOrBlank[item, iteratee]
       return false unless fetched_value
 
-      fetched_value > value
+      regex = /#{value}$/
+      fetched_value.to_s.match?(regex)
     end
   end
 
-  module GreaterThanEqual
+  module NotEndify
     def self.check!(item, iteratee, value)
-      fetched_value = Utility::TryFetchOrBlank[item, iteratee]
-      return false unless fetched_value
-
-      fetched_value >= value
+      !Endify.check!(item, iteratee, value)
     end
   end
 end

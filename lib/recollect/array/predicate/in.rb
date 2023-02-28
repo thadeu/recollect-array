@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Recollect
+module Recollect::Array
   module Included
     def self.check!(item, iteratee, value)
       fetched_value = Array(Utility::TryFetchOrBlank[item, iteratee]).compact

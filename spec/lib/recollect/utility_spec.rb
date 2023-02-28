@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Recollect::Utility::TryFetchOrBlank do
+RSpec.describe Recollect::Array::Utility::TryFetchOrBlank do
   context 'Hash' do
     it 'check one level' do
       hash = {

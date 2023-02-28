@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Recollect
+module Recollect::Array
   module Equal
     def self.check!(item, iteratee, expected_value)
       expected_value == Utility::TryFetchOrBlank[item, iteratee]

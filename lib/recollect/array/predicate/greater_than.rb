@@ -1,18 +1,21 @@
 # frozen_string_literal: true
 
-module Recollect
-  module Contains
+module Recollect::Array
+  module GreaterThan
     def self.check!(item, iteratee, value)
       fetched_value = Utility::TryFetchOrBlank[item, iteratee]
       return false unless fetched_value
 
-      Array(value).any? { |v| fetched_value.to_s.match(/#{v}/) }
+      fetched_value > value
     end
   end
 
-  module NotContains
+  module GreaterThanEqual
     def self.check!(item, iteratee, value)
-      !Contains.check!(item, iteratee, value)
+      fetched_value = Utility::TryFetchOrBlank[item, iteratee]
+      return false unless fetched_value
+
+      fetched_value >= value
     end
   end
 end

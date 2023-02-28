@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
 module Recollect
-  VERSION = '0.0.4'
+  module Array
+    VERSION = '0.0.4'
+  end
 end

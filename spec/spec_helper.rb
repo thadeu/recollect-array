@@ -2,7 +2,7 @@
 
 require 'byebug'
 require 'bundler/setup'
-require 'recollect'
+require 'recollect/array'
 
 Dir["#{File.expand_path(__dir__)}/support/**/*.rb"].each { |f| require f }
 
