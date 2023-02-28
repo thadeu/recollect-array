@@ -46,7 +46,7 @@ module Recollect
             parts = key.to_s.split('_')
             predicate = parts.pop
             iteratee = parts.join('_')
-            klass = Predicate.call(predicate)
+            klass = Predicate.call(predicate || 'eq')
 
             next unless !!klass
 
