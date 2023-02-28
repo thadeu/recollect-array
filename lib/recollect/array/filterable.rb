@@ -44,9 +44,9 @@ module Recollect
             end
           else
             parts = key.to_s.split('_')
-            predicate = parts.pop
+            predicate = parts.size == 1 ? :eq : parts.pop
             iteratee = parts.join('_')
-            klass = Predicate.call(predicate || 'eq')
+            klass = Predicate.call(predicate)
 
             next unless !!klass
 
@@ -68,7 +68,7 @@ module Recollect
         start: Startify, notstart: NotStartify, not_start: NotStartify,
         end: Endify, notend: NotEndify, not_end: NotEndify,
         in: Included, notin: NotIncluded, not_in: NotIncluded
-      }[named.to_sym]
+      }[named.to_sym || :eq]
     end
     private_constant :Predicate
   end

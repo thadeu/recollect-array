@@ -38,6 +38,14 @@ RSpec.describe Recollect::Array::Filterable do
   context 'Equal' do
     context 'when value is not Hash' do
       it 'returns only filters items' do
+        filters = { active: true }
+
+        collection = described_class.call(data, filters)
+
+        expect(collection.result.size).to eq(2)
+      end
+      
+      it 'returns only filters items' do
         filters = { active_eq: true }
 
         collection = described_class.call(data, filters)
