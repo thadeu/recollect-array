@@ -2,18 +2,18 @@
 
 
 module Recollect
-  require_relative 'array/utility'
-  require_relative 'array/hashie'
-  require_relative 'array/predicate/startify'
-  require_relative 'array/predicate/endify'
-  require_relative 'array/predicate/equal'
-  require_relative 'array/predicate/contains'
-  require_relative 'array/predicate/in'
-  require_relative 'array/predicate/less_than'
-  require_relative 'array/predicate/greater_than'
-  require_relative 'array/filterable'
-
   module Array
+    require_relative 'array/utility'
+    require_relative 'array/hashie'
+    require_relative 'array/predicate/startify'
+    require_relative 'array/predicate/endify'
+    require_relative 'array/predicate/equal'
+    require_relative 'array/predicate/contains'
+    require_relative 'array/predicate/in'
+    require_relative 'array/predicate/less_than'
+    require_relative 'array/predicate/greater_than'
+    require_relative 'array/filterable'
+
 
     # ### Array.filter
     # `filter value into Array using conditions

@@ -15,7 +15,7 @@ module Recollect
       attr_reader :result
 
       def initialize(data, filters)
-        @result = Array(data.dup)
+        @result = Array(data)
         @filters = filters
       end
       private_class_method :new
