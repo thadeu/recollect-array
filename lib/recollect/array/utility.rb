@@ -10,6 +10,10 @@ module Recollect::Array
       def to_ary(key)
         return [] if key.empty?
 
+        if key.is_a?(::Array)
+          return key.flat_map { |k| to_ary(k) }
+        end
+
         key.to_s.split(DELIMITER_REGEX).reject(&:empty?)
       end
       alias [] to_ary

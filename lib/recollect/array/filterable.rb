@@ -2,10 +2,48 @@
 
 module Recollect
   module Array
+    class FindByRootKey
+      def self.call(data, key, filter)
+        filter.each do |predicate, value|
+          klass = Predicate.call(predicate)
+
+          next unless !!klass
+
+          data.filter! do |item|
+            case value
+            when Proc, Module
+              klass.check!(item, key, value.call)
+            else
+              klass.check!(item, key, value)
+            end
+          end
+        end
+      end
+    end
+
+    class FindByNonRootKey
+      def self.call(data, keys, filter)
+        filter.each do |predicate, value|
+          klass = Predicate.call(predicate)
+
+          next unless !!klass
+
+          data.filter! do |item|
+            case value
+            when Proc, Module
+              klass.check!(item, keys, value.call)
+            else
+              klass.check!(item, keys, value)
+            end
+          end
+        end
+      end
+    end
+
     class Filterable
       def self.call(data, filters)
         instance = new(data, filters)
-        
+
         instance.call!
         instance.result
       end
@@ -38,7 +76,7 @@ module Recollect
       attr_reader :result
 
       def initialize(data, filters)
-        @result = Array(data)
+        @result = Array(data.dup)
         @filters = filters
       end
       private_class_method :new
@@ -49,26 +87,22 @@ module Recollect
 
       def __apply_filter_callback
         lambda do |target|
-          key, value = target
+          key, filter = target
 
-          case value
+          case filter
           when ::Hash
-            value.each do |predicate, hash_value|
-              klass = Predicate.call(predicate)
+            keys_to_search = Utility::Keys.to_ary(key)
+            is_root_key = keys_to_search.size == 1
 
-              @result.filter! do |item|
-                case hash_value
-                when Proc, Module
-                  klass.check!(item, key, hash_value.call)
-                else
-                  klass.check!(item, key, hash_value)
-                end
-              end
+            if is_root_key
+              FindByRootKey.call(@result, keys_to_search, filter)
+            else
+              FindByNonRootKey.call(@result, keys_to_search, filter)
             end
           else
             parts = key.to_s.split('_')
 
-            predicate = Array(parts[-2..]).filter do |pkey| 
+            predicate = Array(parts[-2..]).filter do |pkey|
               next unless PREDICATES.include? pkey
 
               parts = parts - [pkey]
@@ -76,13 +110,8 @@ module Recollect
             end&.last || :eq
 
             iteratee = parts.join('_')
-            klass = Predicate.call(predicate)
 
-            next unless !!klass
-
-            @result.filter! do |item|
-              klass.check!(item, iteratee, value)
-            end
+            FindByRootKey.call(@result, iteratee, { predicate => filter })
           end
         end
       end

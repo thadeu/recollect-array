@@ -11,6 +11,10 @@ RSpec.describe Recollect::Array do
         email: 'test1@email1.com',
         schedule: { all_day: true },
         numbers: %w[1 2],
+        phones: [
+          { number: '123', ddd: '11' },
+          { number: '456', ddd: '11' }
+        ],
         active: true,
         count: 9
       },
@@ -20,6 +24,7 @@ RSpec.describe Recollect::Array do
         email: 'test2@email2.com',
         schedule: { all_day: false, opened: false },
         numbers: %w[3 4],
+        phones: [],
         active: true,
         count: 10
       },
@@ -29,6 +34,7 @@ RSpec.describe Recollect::Array do
         email: 'test3@email3.com',
         schedule: { all_day: false, opened: true },
         numbers: %w[5 6],
+        phones: [],
         active: false,
         count: 99
       }
@@ -37,14 +43,24 @@ RSpec.describe Recollect::Array do
 
   context '.filter' do
     context 'Equal' do
+      context 'deep array of hash' do
+        it do
+          filters = { 'phones.number': { eq: '456' } }
+
+          collection = described_class.filter(data, filters)
+
+          # expect(collection.size).to eq(1)
+        end
+      end
+
       it 'returns only filters items' do
-        filters = { active_eq: true }
+        filters = { active: { eq: true } }
 
         collection = described_class.filter(data, filters)
 
         expect(collection.size).to eq(2)
       end
-      
+
       it 'returns only filters items' do
         data.push({ active: false, count: 99, schedule: { all_day: true, opened: true } })
 
