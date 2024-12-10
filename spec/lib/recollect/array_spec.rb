@@ -43,16 +43,6 @@ RSpec.describe Recollect::Array do
 
   context '.filter' do
     context 'Equal' do
-      context 'deep array of hash' do
-        it do
-          filters = { 'phones.number': { eq: '456' } }
-
-          collection = described_class.filter(data, filters)
-
-          # expect(collection.size).to eq(1)
-        end
-      end
-
       it 'returns only filters items' do
         filters = { active: { eq: true } }
 

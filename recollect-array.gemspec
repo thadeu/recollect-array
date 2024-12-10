@@ -22,12 +22,8 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 2.5.8'
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'base_x', '~> 0.8.1'
-  spec.add_dependency 'rbnacl', '~> 7.0'
   spec.add_development_dependency 'bundler', '>= 1.14'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'rubocop', '~> 0.70'
-
-  # spec.metadata['rubygems_mfa_required'] = 'true'
 end

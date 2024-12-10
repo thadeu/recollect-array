@@ -2,44 +2,6 @@
 
 module Recollect
   module Array
-    class FindByRootKey
-      def self.call(data, key, filter)
-        filter.each do |predicate, value|
-          klass = Predicate.call(predicate)
-
-          next unless !!klass
-
-          data.filter! do |item|
-            case value
-            when Proc, Module
-              klass.check!(item, key, value.call)
-            else
-              klass.check!(item, key, value)
-            end
-          end
-        end
-      end
-    end
-
-    class FindByNonRootKey
-      def self.call(data, keys, filter)
-        filter.each do |predicate, value|
-          klass = Predicate.call(predicate)
-
-          next unless !!klass
-
-          data.filter! do |item|
-            case value
-            when Proc, Module
-              klass.check!(item, keys, value.call)
-            else
-              klass.check!(item, keys, value)
-            end
-          end
-        end
-      end
-    end
-
     class Filterable
       def self.call(data, filters)
         instance = new(data, filters)
@@ -48,74 +10,70 @@ module Recollect
         instance.result
       end
 
-      PREDICATES = %w[
-        eq
-        noteq
-        not_eq
-        cont
-        notcont
-        not_cont
-        lt
-        lteq
-        gt
-        gteq
-        start
-        notstart
-        not_start
-        end
-        notend
-        not_end
-        in
-        notin
-        not_in
-      ].freeze
+      attr_reader :filters, :result
 
-      # Available filter
-      attr_accessor :filters
-
-      attr_reader :result
-
-      def initialize(data, filters)
-        @result = Array(data.dup)
+      def initialize(bigdata, filters)
+        @result = Array(bigdata)
         @filters = filters
+        @idx = ::Set.new
       end
       private_class_method :new
 
       def call!
-        @filters.each(&__apply_filter_callback)
-      end
+        @result.each_with_index do |row, index|
+          collected = @filters.collect do |key, condition|
+            filter_by(row, key, condition)
+          end.flatten.uniq
 
-      def __apply_filter_callback
-        lambda do |target|
-          key, filter = target
-
-          case filter
-          when ::Hash
-            keys_to_search = Utility::Keys.to_ary(key)
-            is_root_key = keys_to_search.size == 1
-
-            if is_root_key
-              FindByRootKey.call(@result, keys_to_search, filter)
-            else
-              FindByNonRootKey.call(@result, keys_to_search, filter)
-            end
-          else
-            parts = key.to_s.split('_')
-
-            predicate = Array(parts[-2..]).filter do |pkey|
-              next unless PREDICATES.include? pkey
-
-              parts = parts - [pkey]
-              pkey
-            end&.last || :eq
-
-            iteratee = parts.join('_')
-
-            FindByRootKey.call(@result, iteratee, { predicate => filter })
+          case collected.all?
+          in TrueClass then @idx.add(index)
+          in FalseClass then @idx.delete(index)
           end
         end
+
+        @result = @result.values_at(*@idx.to_a)
       end
-      private :__apply_filter_callback
+
+      def filter_by(row, key, hash_or_value)
+        case hash_or_value
+        when ::Hash
+          find_by_hash(key, hash_or_value, row)
+        else
+          find_by_other(key, hash_or_value, row)
+        end
+      end
+
+      def find_by_hash(key, condition, row)
+        condition.collect do |predicate, value|
+          exists?(key, predicate, value, row)
+        end
+      end
+
+      def find_by_other(key, value, row)
+        parts = key.to_s.split('_')
+
+        predicate = Array(parts[-2..]).filter do |pkey|
+          next unless PREDICATES.include? pkey
+
+          parts = parts - [pkey]
+
+          pkey
+        end&.last || :eq
+
+        iteratee = parts.join('_')
+
+        exists?(iteratee, predicate, value, row)
+      end
+
+      def exists?(iteratee, predicate, value, row)
+        keys = Utility::Keys.to_ary(iteratee)
+
+        klass = Predicate.call(predicate)
+        return true unless !!klass
+
+        valueable = value.respond_to?(:call) ? value.call : value
+        klass.check!(row, keys, valueable)
+      end
     end
 
     Predicate = lambda do |named|
@@ -142,5 +100,24 @@ module Recollect
       }[named.to_sym || :eq]
     end
     private_constant :Predicate
+
+    AFFIRMATIVES = %w[
+      eq
+      in cont
+      lt lteq
+      gt gteq
+      start end
+    ].freeze
+
+    NEGATIVES = %w[
+      noteq not_eq
+      notcont not_cont
+      notstart not_start
+      notend not_end
+      notin not_in
+    ].freeze
+
+    PREDICATES = (AFFIRMATIVES + NEGATIVES).freeze
+    private_constant :PREDICATES
   end
 end

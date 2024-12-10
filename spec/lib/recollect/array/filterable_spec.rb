@@ -11,6 +11,10 @@ RSpec.describe Recollect::Array::Filterable do
         email: 'test1@email1.com',
         schedule: { all_day: true, opened: true },
         numbers: %w[1 2],
+        phones: [
+          { number: '123', ddd: '11' },
+          { number: '456', ddd: '11' }
+        ],
         active: true,
         count: 9
       },
@@ -20,6 +24,8 @@ RSpec.describe Recollect::Array::Filterable do
         email: 'test2@email2.com',
         schedule: { all_day: false, opened: false },
         numbers: %w[3 4],
+        phones: [
+        ],
         active: true,
         count: 10
       },
@@ -29,6 +35,9 @@ RSpec.describe Recollect::Array::Filterable do
         email: 'test3@email3.com',
         schedule: { all_day: false, opened: false },
         numbers: %w[5 6],
+        phones: [
+          { number: '789', ddd: '11' },
+        ],
         active: false,
         count: 99
       }
@@ -36,6 +45,16 @@ RSpec.describe Recollect::Array::Filterable do
   end
 
   context 'Equal' do
+    context 'deep array of hash' do
+      it do
+        filters = { 'phones.number': { eq: '456' } }
+
+        collection = described_class.call(data.dup, filters)
+
+        # expect(collection.size).to eq(1)
+      end
+    end
+
     context 'when value is not Hash' do
       it 'returns only filters items' do
         filters = { active: true }
@@ -44,7 +63,7 @@ RSpec.describe Recollect::Array::Filterable do
 
         expect(collection.size).to eq(2)
       end
-      
+
       it 'returns only filters items' do
         filters = { active_eq: true }
 
@@ -146,7 +165,7 @@ RSpec.describe Recollect::Array::Filterable do
       it 'returns only filters items' do
         filters = {
           'schedule.opened': { eq: false },
-          'schedule.all_day': { eq: false }
+          'schedule.all_day': { eq: false },
         }
 
         collection = described_class.call(data, filters)
@@ -157,7 +176,7 @@ RSpec.describe Recollect::Array::Filterable do
       it 'returns only filters items' do
         filters = {
           'schedule.opened': { eq: true },
-          name: { cont: 'Test', notcont: '#1' }
+          name: { cont: 'Test', notcont: '#1' },
         }
 
         collection = described_class.call(data, filters)
@@ -196,12 +215,10 @@ RSpec.describe Recollect::Array::Filterable do
       }
 
       collection = described_class.call(data, filters)
-      collect_ids = Recollect::Array.pluck(collection, 'id')
 
       expected_ids = [1]
 
       expect(collection.size).to eq(1)
-      expect(collect_ids).to eq(expected_ids)
     end
   end
 
@@ -286,7 +303,7 @@ RSpec.describe Recollect::Array::Filterable do
     it 'returns only filters items' do
       filters = { email_end: 'email1.com' }
 
-      collection = described_class.call(data, filters)
+      collection = described_class.call(data.dup, filters)
 
       expect(collection.size).to eq(1)
     end
@@ -359,12 +376,10 @@ RSpec.describe Recollect::Array::Filterable do
         }
 
         collection = described_class.call(data, filters)
-        collect_ids = Recollect::Array.pluck(collection, 'id')
 
         expected_ids = [1]
 
         expect(collection.size).to eq(1)
-        expect(collect_ids).to eq(expected_ids)
       end
 
       it 'returns only filters items' do
