@@ -2,18 +2,27 @@
 
 module Recollect::Array
   module Startify
-    def self.check!(item, iteratee, value)
-      fetched_value = Utility::TryFetchOrBlank[item, iteratee]
-      return false unless fetched_value
+    def self.check!(item, iteratee, right)
+      left = Utility::TryFetchOrBlank[item, iteratee]
+      return false unless left
 
-      regex = /^#{value}/
-      fetched_value.to_s.match?(regex)
+      regex = /^#{right}/
+      left.to_s.match?(regex)
+    end
+
+    def self.compare(left, right)
+      regex = /^#{right}/
+      left.to_s.match?(regex)
     end
   end
 
   module NotStartify
-    def self.check!(item, iteratee, value)
-      !Startify.check!(item, iteratee, value)
+    def self.check!(item, iteratee, right)
+      !Startify.check!(item, iteratee, right)
+    end
+
+    def self.compare(left, right)
+      !Startify.compare(left, right)
     end
   end
 end

@@ -36,16 +36,25 @@ module Recollect
 
       def filter_by(row, key, hash_or_value)
         case hash_or_value
-        when ::Hash
-          find_by_hash(key, hash_or_value, row)
-        else
-          find_by_other(key, hash_or_value, row)
+        in ::Hash then find_by_hash(key, hash_or_value, row)
+        else find_by_other(key, hash_or_value, row)
         end
       end
 
-      def find_by_hash(key, condition, row)
-        condition.collect do |predicate, value|
-          exists?(key, predicate, value, row)
+      def find_by_hash(key, pair_condition, row)
+        pair_condition.collect do |predicate, value|
+          keys = Utility::Keys.to_ary(key)
+
+          right = Utility::TryFetchOrBlank[row, keys[0..-1]]
+          predicatable = Predicate[predicate]
+          valueable = value.respond_to?(:call) ? value.call : value
+
+          case right
+          in [*]
+            Array(right).any? { |o| predicatable.compare(o, valueable) }
+          else
+            predicatable.compare(right, valueable)
+          end
         end
       end
 
@@ -62,17 +71,10 @@ module Recollect
 
         iteratee = parts.join('_')
 
-        exists?(iteratee, predicate, value, row)
-      end
-
-      def exists?(iteratee, predicate, value, row)
-        keys = Utility::Keys.to_ary(iteratee)
-
-        klass = Predicate.call(predicate)
-        return true unless !!klass
-
+        predicatable = Predicate[predicate]
         valueable = value.respond_to?(:call) ? value.call : value
-        klass.check!(row, keys, valueable)
+
+        predicatable.check!(row, iteratee, valueable)
       end
     end
 
@@ -89,8 +91,11 @@ module Recollect
         gt: GreaterThan,
         gteq: GreaterThanEqual,
         start: Startify,
+        st: Startify,
         notstart: NotStartify,
+        notst: NotStartify,
         not_start: NotStartify,
+        not_st: NotStartify,
         end: Endify,
         notend: NotEndify,
         not_end: NotEndify,
@@ -106,13 +111,13 @@ module Recollect
       in cont
       lt lteq
       gt gteq
-      start end
+      st start end
     ].freeze
 
     NEGATIVES = %w[
       noteq not_eq
       notcont not_cont
-      notstart not_start
+      notstart notst not_start not_st
       notend not_end
       notin not_in
     ].freeze

@@ -5,7 +5,6 @@ require 'set'
 module Recollect
   module Array
     require_relative 'array/utility'
-    require_relative 'array/hashie'
     require_relative 'array/predicate/startify'
     require_relative 'array/predicate/endify'
     require_relative 'array/predicate/equal'
@@ -26,19 +25,6 @@ module Recollect
     # ````
     def self.filter(data, filters = {})
       Filterable.call(data, filters)
-    end
-
-    # ### Array.pluck
-    # `fetch value into Array, like Lodash#pluck`
-    #
-    # ````
-    # data = [{ a: 1, b: { c: 2 }, d: ['1'] }]
-    # Recollect::Array.pluck(data, 'b.c')
-    # ````
-    def self.pluck(data, iteratee)
-      return [] unless data.any?
-
-      data.map { |item| Hashie.get(item, iteratee) }
     end
   end
 end

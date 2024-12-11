@@ -76,36 +76,4 @@ RSpec.describe Recollect::Array do
       end
     end
   end
-
-  context '.pluck' do
-    context 'when root path' do
-      it 'retrive value' do
-        result = described_class.pluck(data, 'id')
-
-        expect(result).to eq([1, 2, 3])
-      end
-
-      it 'retrive value' do
-        result = described_class.pluck([], 'id')
-
-        expect(result).to eq([])
-      end
-    end
-
-    context 'when nested Hash path' do
-      it 'retrive value' do
-        result = described_class.pluck(data, 'schedule.all_day')
-
-        expect(result).to eq([true, false, false])
-      end
-    end
-
-    context 'when nested Array path' do
-      it 'retrive value' do
-        result = described_class.pluck(data, 'numbers.0')
-
-        expect(result).to eq(%w[1 3 5])
-      end
-    end
-  end
 end

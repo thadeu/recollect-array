@@ -2,20 +2,28 @@
 
 module Recollect::Array
   module LessThan
-    def self.check!(item, iteratee, value)
-      fetched_value = Utility::TryFetchOrBlank[item, iteratee]
-      return false unless fetched_value
+    def self.check!(item, iteratee, right)
+      left = Utility::TryFetchOrBlank[item, iteratee]
+      return false unless left
 
-      fetched_value < value
+      compare(left, right)
+    end
+
+    def self.compare(left, right)
+      left < right
     end
   end
 
   module LessThanEqual
-    def self.check!(item, iteratee, value)
-      fetched_value = Utility::TryFetchOrBlank[item, iteratee]
-      return false unless fetched_value
+    def self.check!(item, iteratee, right)
+      left = Utility::TryFetchOrBlank[item, iteratee]
+      return false unless left
 
-      fetched_value <= value
+      compare(left, right)
+    end
+
+    def self.compare(left, right)
+      left <= right
     end
   end
 end

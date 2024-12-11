@@ -12,8 +12,8 @@ RSpec.describe Recollect::Array::Filterable do
         schedule: { all_day: true, opened: true },
         numbers: %w[1 2],
         phones: [
-          { number: '123', ddd: '11' },
-          { number: '456', ddd: '11' }
+          { number: '123', ddd: '10', position: { value: [1], status: { enum: %w[online] } } },
+          { number: '456', ddd: '11', position: { value: [2], status: { enum: %w[offline] } } }
         ],
         active: true,
         count: 9
@@ -24,8 +24,7 @@ RSpec.describe Recollect::Array::Filterable do
         email: 'test2@email2.com',
         schedule: { all_day: false, opened: false },
         numbers: %w[3 4],
-        phones: [
-        ],
+        phones: [],
         active: true,
         count: 10
       },
@@ -36,7 +35,7 @@ RSpec.describe Recollect::Array::Filterable do
         schedule: { all_day: false, opened: false },
         numbers: %w[5 6],
         phones: [
-          { number: '789', ddd: '11' },
+          { number: '789', ddd: '13' },
         ],
         active: false,
         count: 99
@@ -44,17 +43,151 @@ RSpec.describe Recollect::Array::Filterable do
     ]
   end
 
-  context 'Equal' do
-    context 'deep array of hash' do
-      it do
-        filters = { 'phones.number': { eq: '456' } }
+  context 'Deep values' do
+    context 'eq' do
+      context 'array of hash' do
+        it 'match array values in deep structure' do
+          filters = { 'phones.number': { eq: '456' } }
 
-        collection = described_class.call(data.dup, filters)
+          collection = described_class.call(data, filters)
 
-        # expect(collection.size).to eq(1)
+          expect(collection.size).to eq(1)
+        end
+
+        it 'match array values in deep structure' do
+          filters = {
+            'phones.position.value': {
+              eq: 1
+            }
+          }
+
+          collection = described_class.call(data, filters)
+
+          expect(collection.size).to eq(1)
+          expect(collection.first[:id]).to eq(1)
+        end
+
+        it 'match array values in deep structure' do
+          filters = {
+            'phones.position.status.enum': {
+              eq: 'online'
+            }
+          }
+
+          collection = described_class.call(data, filters)
+
+          expect(collection.size).to eq(1)
+          expect(collection.first[:id]).to eq(1)
+        end
+
+        it 'match array values in deep structure' do
+          filters = {
+            'phones.0.position.status.enum': {
+              eq: 'online'
+            }
+          }
+
+          collection = described_class.call(data.slice(0,1), filters)
+
+          expect(collection.size).to eq(1)
+          expect(collection.first[:id]).to eq(1)
+        end
+
+        it 'match array values in deep structure' do
+          filters = {
+            'phones.1.position.status.enum': {
+              eq: 'offline'
+            }
+          }
+
+          collection = described_class.call(data.slice(0,1), filters)
+
+          expect(collection.size).to eq(1)
+          expect(collection.first[:id]).to eq(1)
+        end
+
+        it 'match array values in deep structure' do
+          filters = {
+            'phones.1.position.status': {
+              eq: { enum: ['offline'] }
+            }
+          }
+
+          collection = described_class.call(data.slice(0,1), filters)
+
+          expect(collection.size).to eq(1)
+          expect(collection.first[:id]).to eq(1)
+        end
       end
     end
 
+    context 'not_eq' do
+      context 'array of hash' do
+        it 'match array values in deep structure' do
+          filters = { 'phones.number': { not_eq: '456' } }
+
+          collection = described_class.call(data, filters)
+
+          expect(collection.size).to eq(2)
+        end
+      end
+    end
+
+    context 'cont' do
+      context 'array of hash' do
+        it 'match array values in deep structure' do
+          filters = { 'phones.number': { cont: '456' } }
+
+          collection = described_class.call(data, filters)
+
+          expect(collection.size).to eq(1)
+        end
+      end
+    end
+
+    context 'start' do
+      context 'array of hash' do
+        it 'match array values in deep structure' do
+          filters = {
+            'phones.number': { st: '4' },
+            'phones.ddd': { st: '1' }
+          }
+
+          collection = described_class.call(data, filters)
+
+          expect(collection.size).to eq(1)
+        end
+      end
+    end
+
+    context 'end' do
+      context 'array of hash' do
+        it 'match array values in deep structure' do
+          filters = {
+            'phones.number': { end: '9' }
+          }
+
+          collection = described_class.call(data, filters)
+
+          expect(collection.size).to eq(1)
+        end
+      end
+    end
+
+    context 'in' do
+      context 'array of hash' do
+        it 'match array values in deep structure' do
+          filters = { 'phones.number': { in: ['789', '456'] } }
+
+          collection = described_class.call(data, filters)
+
+          expect(collection.size).to eq(2)
+        end
+      end
+    end
+  end
+
+  context 'Equal' do
     context 'when value is not Hash' do
       it 'returns only filters items' do
         filters = { active: true }
@@ -157,7 +290,7 @@ RSpec.describe Recollect::Array::Filterable do
           'schedule.opened': { eq: true }
         }
 
-        collection = described_class.call(data, filters)
+        collection = described_class.call([data[0]], filters)
 
         expect(collection.size).to eq(1)
       end

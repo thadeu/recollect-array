@@ -54,14 +54,46 @@ module Recollect::Array
     # hash = { a: 1, b: { c: 2 }, d: [{ e: 3 }] }
     # Utility::TryFetchOrBlank.(hash, 'd.[0].e')
     # ````
-    TryFetchOrBlank = ->(data, *keys) do
+    TryFetchOrBlank = ->(data, *arr_keys) do
       reducer = ->(memo, key) do
-        memo.to_h.dig(*Keys.to_dig(key))
-      rescue StandardError
+        symbol_keys = *Keys.to_dig(key)
+
+        deep_value = symbol_keys.reduce(memo) do |acc, attr|
+          acc = acc.compact
+
+          case acc
+          in [::Integer, _] | [::String, _] | Integer
+            acc[attr]
+          in ::Array
+            case acc
+            in [::Hash, _]
+              case attr
+              in ::Integer
+                acc&.dig(attr)
+              else
+                acc&.flat_map{|x| x&.dig(attr) }
+              end
+            else
+              case attr
+              in ::Integer | ::String
+                acc&.dig(attr)
+              else
+                acc&.flat_map{|x| x.respond_to?(:dig) ? x&.dig(attr) : x }
+              end
+            end
+          in ::Hash
+            acc&.dig(attr)
+          else
+            acc
+          end
+        end
+
+        deep_value
+      rescue StandardError => e
         nil
       end
 
-      keys.reduce(data, &reducer)
+      arr_keys.reduce(data, &reducer)
     end
   end
 end
